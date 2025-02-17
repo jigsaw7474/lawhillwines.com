@@ -1,109 +1,120 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lawhill Wine Database</title>
-    <style>
-        body {
-            font-family: 'Century Gothic', Arial, sans-serif;
-            background-color: #f4f8ff;
-            color: #003366;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            padding: 20px;
-        }
-        h1 {
-            background-color: #003366;
-            color: rgb(255, 255, 255);
-            padding: 20px;
-            border-radius: 10px;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #003366;
-            border-radius: 5px;
-        }
-        .filters {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        .filters select {
-            width: 18%;
-        }
-        .wine-card {
-            background: white;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: left;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .wine-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-        .wine-card h3 {
-            margin: 5px 0;
-            color: #003366;
-        }
-        .wine-card p {
-            margin: 3px 0;
-            color: #333;
-        }
-        .wine-image {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-    </style>
-    <script>
-        const wines = [
-            { productCode: "BW001", name: "Borgogno Langhe Riesling", region: "Piedmont", country: "Italy", type: "White", vintage: "0000", price: "VEP$74.00", description: "offers vibrant aromas of citrus, green apple, and white flowers.", pairings: "Seafood, pasta", grapeVariety: "Riesling" },
-            { productCode: "BW002", name: "Borgogno Barolo Classico DOCG", region: "Piedmont", country: "Italy", type: "Red", vintage: "2018/2019", price: "VEP$144.00", description: "complex aromas of red cherries, roses, and tar, complemented by hints of truffle and earth.", pairings: "Braised meat, aged cheese", grapeVariety: "Nebbiolo" },
-            { productCode: "BW003", name: "Borgogno Barolo Riserva DOCG", region: "Piedmont", country: "Italy", type: "Red", vintage: "2015", price: "VEP$369.00", description: "complex aromas of dried cherries, roses, leather, and truffle, with hints of tobacco and spice.", pairings: "Braised meat, aged cheese", grapeVariety: "Nebbiolo" },
-            { productCode: "BW004", name: "Borgogno Langhe DOC Nebbiolo", region: "Piedmont", country: "Italy", type: "Red", vintage: "2020/2021", price: "VEP$74.00", description: "showcases aromas of red cherries, violets, and subtle spices.", pairings: "Roasted meat, pasta", grapeVariety: "Nebbiolo" },
-            { productCode: "BW005", name: "Borgogno Barbera d'Alba Superiore DOC", region: "Piedmont", country: "Italy", type: "White", vintage: "2020/2021", price: "VEP$67.00", description: "vibrant aromas of red berries, plums, and hints of spices.", pairings: "pizza, pasta", grapeVariety: "Barbera" },
-            { productCode: "BW006", name: "Villa Sparina Gavi del Comune di Gavi DOCG", region: "Piedmont", country: "Italy", type: "White", vintage: "2021", price: "VEP$43.00", description: "delicate aromas of green apple, pear, and citrus, with hints of almond and floral notes.", pairings: "Seafood, pasta", grapeVariety: "Cortese" },
-            { productCode: "BW007", name: "Villa Sparina Gavi del Comune di Gavi DOCG 1500ml", region: "Piedmont", country: "Italy", type: "White", vintage: "2020", price: "VEP$85.00", description: "delicate aromas of green apple, pear, and citrus, with hints of almond and floral notes.", pairings: "Seafood, pasta", grapeVariety: "Cortese" },
-            { productCode: "BW008", name: "Scarpa Moscato d'Asti DOCG", region: "Piedmont", country: "Italy", type: "Moscato", vintage: "2022", price: "VEP$44.00", description: "offers sweet and aromatic notes of ripe peach, apricot, and orange blossom, with hints of honey and white flowers.", pairings: "fruit desserts, pastries", grapeVariety: "Moscato" },
-            { productCode: "BW009", name: "Scarpa Vermouth d Torino Rosso DOCG", region: "Piedmont", country: "Italy", type: "Red", vintage: "NV", price: "VEP$80.00", description: "complex aromas of dried fruits, herbs, and spices, with notes of caramel and citrus peel.", pairings: "appetizers, cheeses", grapeVariety: "Native Blend" },
-            { productCode: "RW001", name: "Ridolfi Brunello di Montalcino DOCG", region: "Tuscany", country: "Italy", type: "Red", vintage: "2017", price: "VEP$118.00", description: "It has a full body, firm tannins, and a long, elegant finish.", pairings: "Braised meats, aged cheese", grapeVariety: "Sangiovese" },
-            { productCode: "RW002", name: "Ridolfi Fiero Rosso Toscana Super Tuscan IGT", region: "Tuscany", country: "Italy", type: "Red", vintage: "2019", price: "VEP$67.00", description: "aromas of blackberries, cherries, and plums, with hints of spices, tobacco, and oak. It has a full body, velvety tannins, and a long, complex finish.", pairings: "Rich sauce, mature cheese", grapeVariety: "Sangiovese, Merlot, Cabernet Sauvignon" },
-            { productCode: "RW003", name: "Ricasoli Chianti Classico Brolio DOCG", region: "Tuscany", country: "Italy", type: "Red", vintage: "2020/2021", price: "VEP$47.00", description: "aromas of ripe cherries, plums, and hints of violet.", pairings: "Roasted meats, aged cheeses", grapeVariety: "Sangiovese" },
-            { productCode: "RW004", name: "Ricasoli Chianti Classico Riserva Brolio DOCG", region: "Tuscany", country: "Italy", type: "Red", vintage: "2019", price: "VEP$68.00", description: "aromas of ripe cherries, red berries, and hints of spices and leather.", pairings: "Grilled meats, aged cheeses", grapeVariety: "Sangiovese" },
-            { productCode: "RW005", name: "Belvento Vermentino Toscana IGT", region: "Tuscany", country: "Italy", type: "White", vintage: "2022", price: "VEP$36.00", description: "aromatic white wine with notes of citrus, pear, and white flowers. It has a lively acidity, a light to medium body, and a refreshing finish.", pairings: "Grilled vegetables, pasta", grapeVariety: "Vermentino" },
-            { productCode: "RW006", name: "Belvento Sireno Toscana IGT", region: "Tuscany", country: "Italy", type: "Red", vintage: "2019", price: "VEP$36.00", description: "deep and lively ruby red, which almost anticipates its intense nose of flowers and ripe red fruit, drifting into spice nuances.", pairings: "Meat dishes, vegetables", grapeVariety: "Sangiovese" },
-            { productCode: "RW007", name: "Sella & Mosca Vermentino de Sardegna La Cala DOC", region: "Sardinia", country: "Italy", type: "White", vintage: "2020", price: "VEP$36.00", description: "displays inviting aromas of citrus fruits, green apple, and Mediterranean herbs. With its crisp acidity, medium body, and refreshing finish reminiscent of a sea breeze.", pairings: "Seafood, salads", grapeVariety: "Vermentino" },
-            { productCode: "RW008", name: "Sella & Mosca Monteoro Vermentino di Gallura Superiore DOC", region: "Sardinia", country: "Italy", type: "White", vintage: "NV", price: "VEP$42.00", description: "aromas of ripe citrus, tropical fruits, and subtle floral notes.", pairings: "Seafood, pasta", grapeVariety: "Vermentino" },
-            { productCode: "RW009", name: "Sella & Mosca Terre Bianche Alghero Torbato DOC", region: "Sardinia", country: "Italy", type: "White", vintage: "NV", price: "VEP$42.00", description: "aromas of white flowers, citrus, and a hint of minerality.", pairings: "Grilled vegetables, fresh cheese", grapeVariety: "Torbato" },
-            { productCode: "AW001", name: "Sella & Mosca Anemone Alghero Rosato DOC", region: "Sardinia", country: "Italy", type: "Rosato", vintage: "NV", price: "VEP$42.00", description: "soft, delicate pink, with various tones. It is plush, fresh, varied, and captivating on the nose, where the aromas blend to form an exuberant bouquet. The main floral note is violet, the fruity one cherry.", pairings: "white meats, vegetables", grapeVariety: "Native Blend" },
-            { productCode: "AW002", name: "Sella & Mosca Cannonau di Sardegna Riserva DOCG", region: "Sardinia", country: "Italy", type: "Red", vintage: "2019/2022", price: "VEP$39.00", description: "aromas of ripe red berries, spices, and hints of Mediterranean herbs.", pairings: "Grilled meats, aged cheese", grapeVariety: "Cannonau" },
-            { productCode: "AW003", name: "La Gioiosa Prosecco DOCG Treviso Brut NV", region: "Veneto", country: "Italy", type: "Prosecco", vintage: "NV", price: "VEP$33.00", description: "aromas of green apple, pear, and citrus, complemented by floral notes.", pairings: "Light appetizers, seafood", grapeVariety: "Glera" },
-            { productCode: "AW004", name: "Nino Franco Nodi Valdobbiandene Prosecco Superiore", region: "Veneto", country: "Italy", type: "Prosecco", vintage: "2020", price: "VEP$66.00", description: "aromas of white peach, citrus, and acacia flowers, with a delicate mineral touch.", pairings: "Light dishes, seafood", grapeVariety: "Glera" },
-            { productCode: "AW005", name: "Nino Franco Rustico Valdobbiandene Prosecco Superiore", region: "Veneto", country: "Italy", type: "Prosecco", vintage: "NV", price: "VEP$49.00", description: "charming sparkling wine with aromas of apple, pear, and citrus, complemented by floral and yeasty notes.", pairings: "Aperitifs, seafood", grapeVariety: "Glera" },
-            { productCode: "AW006", name: "Nicolis Valpolicella DOC Classico", region: "Veneto", country: "Italy", type: "Red", vintage: "2021", price: "VEP$37.00", description: "aromas of red cherries, plums, and hints of spices.", pairings: "Pizza, grilled meats", grapeVariety: "Corvina, Rondinella, Molinara" },
-            { productCode: "AW007", name: "Nicolis Amarone Valpolicella Classico DOCG", region: "Veneto", country: "Italy", type: "Red", vintage: "2017/2019", price: "VEP$118.00", description: "a robust and complex red wine with aromas of dried fruits, chocolate, and spices.", pairings: "Aged cheese, rich meats", grapeVariety: "Corvina, Molinara, Rondinella, Croatina" },
-            { productCode: "AW008", name: "St Pauls Kellerei Sauvignon Blanc Gfill Alto Adige DOC", region: "Alto Adige", country: "Italy", type: "White", vintage: "2021", price: "VEP$46.00", description: "an aromatic white wine with vibrant notes of citrus, green apple, and tropical fruits, complemented by hints of herbs and minerality.", pairings: "Seafood, goat cheese", grapeVariety: "Sauvignon Blanc" },
-            { productCode: "AW009", name: "St Pauls Kellerei Chardonnay Alto Adige DOC", region: "Alto Adige", country: "Italy", type: "white", vintage: "2021", price: "VEP$40.00", description: "aromas of ripe apples, pears, and subtle notes of vanilla and toast.", pairings: "Creamy pasta, seafood", grapeVariety: "Chardonnay" },
-            { productCode: "CW001", name: "St Pauls Kellerei Pinot Nero Luzia Alto Adige DOC", region: "Alto Adige", country: "Italy", type: "Red", vintage: "2021/2022", price: "VEP$50.00", description: "aromas of red berries, cherries, and subtle earthy notes.", pairings: "Roasted poultry, salmon", grapeVariety: "Pinot Nero" },
-            { productCode: "CW002", name: "Cantina Lavis Pinot Grigio Trentino DOC", region: "Alto Adige", country: "Italy", type: "White", vintage: "2021/2022", price: "VEP$30.00", description: "aromas of green apple, pear, and citrus, enhanced by subtle floral notes.", pairings: "Seafood, pasta dishes", grapeVariety: "Pinot Grigio" },
-            { productCode: "CW003", name: "Cantina Lavis Chardonnay Treviso DOC", region: "Alto Adige", country: "Italy", type: "White", vintage: "2021", price: "VEP$30.00", description: "aromas of ripe apple, pear, and a hint of vanilla.", pairings: "Poultry, creamy sauce", grapeVariety: "Chardonnay" },
-            { productCode: "CW004", name: "Cantina Lavis Sauvignon Blanc Trevenezie IGT ", region: "Alto Adige", country: "Italy", type: "White", vintage: "2021", price: "VEP$30.00", description: "aromas of citrus, green apple, and tropical fruits, complemented by herbal and mineral notes.", pairings: "Salads, light dishes", grapeVariety: "Sauvignon" },
-            { productCode: "CW005", name: "Cusumano Angimbe Terre Sicilane Bianco IGT SV", region: "Sicily", country: "Italy", type: "White", vintage: "2021", price: "VEP$39.00", description: "aromatic white wine with notes of citrus, green apple, and tropical fruits, complemented by floral and mineral hints.", pairings: "Salads, seafoods", grapeVariety: "Insolia, Chardonnay" },
-            { productCode: "CW006", name: "Cusumano Benuara Terre Siciliane Rosso IGT SV", region: "Sicily", country: "Italy", type: "Red", vintage: "2021", price: "VEP$46.00", description: "aromas of dark berries, plums, and spices, with a touch of earthy undertones.", pairings: "Grilled meats, pasta dishes", grapeVariety: "Nero d'Avola, Syrah" },
-            { productCode: "CW007", name: "Alta Mora Etna Bianco DOC ", region: "Sicily", country: "Italy", type: "White", vintage: "2021", price: "VEP$55.00", description: "aromas of citrus, green apple, and white flowers, with a mineral backbone typical of Etna wines.", pairings: "Seafood, light pasta dishes", grapeVariety: "Carricante" },
-            { productCode: "CW008", name: "Alta Mora Etna Rosso DOC", region: "Sicily", country: "Italy", type: "Red", vintage: "2019/2020", price: "VEP$55.00", description: "aromas of red berries, cherries, and subtle earthy and smoky notes.", pairings: "Rich sauces, aged cheese", grapeVariety: "Nerello Mascalese" },
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wine Catalog</title>
+  <style>
+    body {
+      font-family: 'Century Gothic', Arial, sans-serif;
+      background-color: #f4f8ff;
+      color: #003366;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+  .container {
+      width: 80%;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      background-color: #003366;
+      color: rgb(255, 255, 255);
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #003366;
+      border-radius: 5px;
+    }
+
+  .filters {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+  .filters select {
+      width: 18%;
+    }
+
+  .wine-card {
+      background: white;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+  .wine-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+  .wine-card h3 {
+      margin: 5px 0;
+      color: #003366;
+    }
+
+  .wine-card p {
+      margin: 3px 0;
+      color: #333;
+    }
+
+  .wine-image {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+  </style>
+  <script>
+    const wines = [
+      {productCode: "BW001", name: "Borgogno Langhe Riesling", region: "Piedmont", country: "Italy", type: "White", vintage: "0000", price: "VEP$74.00", description: "offers vibrant aromas of citrus, green apple, and white flowers.", pairings: "Seafood, pasta", grapeVariety: "Riesling"},
+      {productCode: "BW002", name: "Borgogno Barolo Classico DOCG", region: "Piedmont", country: "Italy", type: "Red", vintage: "2018/2019", price: "VEP$144.00", description: "complex aromas of red cherries, roses, and tar, complemented by hints of truffle and earth.", pairings: "Braised meat, aged cheese", grapeVariety: "Nebbiolo"},
+      {productCode: "BW003", name: "Borgogno Barolo Riserva DOCG", region: "Piedmont", country: "Italy", type: "Red", vintage: "2015", price: "VEP$369.00", description: "complex aromas of dried cherries, roses, leather, and truffle, with hints of tobacco and spice.", pairings: "Braised meat, aged cheese", grapeVariety: "Nebbiolo"},
+      {productCode: "BW004", name: "Borgogno Langhe DOC Nebbiolo", region: "Piedmont", country: "Italy", type: "Red", vintage: "2020/2021", price: "VEP$74.00", description: "showcases aromas of red cherries, violets, and subtle spices.", pairings: "Roasted meat, pasta", grapeVariety: "Nebbiolo"},
+      {productCode: "BW005", name: "Borgogno Barbera d'Alba Superiore DOC", region: "Piedmont", country: "Italy", type: "White", vintage: "2020/2021", price: "VEP$67.00", description: "vibrant aromas of red berries, plums, and hints of spices.", pairings: "pizza, pasta", grapeVariety: "Barbera"},
+      {productCode: "BW006", name: "Villa Sparina Gavi del Comune di Gavi DOCG", region: "Piedmont", country: "Italy", type: "White", vintage: "2021", price: "VEP$43.00", description: "delicate aromas of green apple, pear, and citrus, with hints of almond and floral notes.", pairings: "Seafood, pasta", grapeVariety: "Cortese"},
+      {productCode: "BW007", name: "Villa Sparina Gavi del Comune di Gavi DOCG 1500ml", region: "Piedmont", country: "Italy", type: "White", vintage: "2020", price: "VEP$85.00", description: "delicate aromas of green apple, pear, and citrus, with hints of almond and floral notes.", pairings: "Seafood, pasta", grapeVariety: "Cortese"},
+      {productCode: "BW008", name: "Scarpa Moscato d'Asti DOCG", region: "Piedmont", country: "Italy", type: "Moscato", vintage: "2022", price: "VEP$44.00", description: "offers sweet and aromatic notes of ripe peach, apricot, and orange blossom, with hints of honey and white flowers.", pairings: "fruit desserts, pastries", grapeVariety: "Moscato"},
+      {productCode: "BW009", name: "Scarpa Vermouth d Torino Rosso DOCG", region: "Piedmont", country: "Italy", type: "Red", vintage: "NV", price: "VEP$80.00", description: "complex aromas of dried fruits, herbs, and spices, with notes of caramel and citrus peel.", pairings: "appetizers, cheeses", grapeVariety: "Native Blend"},
+      {productCode: "RW001", name: "Ridolfi Brunello di Montalcino DOCG", region: "Tuscany", country: "Italy", type: "Red", vintage: "2017", price: "VEP$118.00", description: "It has a full body, firm tannins, and a long, elegant finish.", pairings: "Braised meats, aged cheese", grapeVariety: "Sangiovese"},
+      {productCode: "RW002", name: "Ridolfi Fiero Rosso Toscana Super Tuscan IGT", region: "Tuscany", country: "Italy", type: "Red", vintage: "2019", price: "VEP$67.00", description: "aromas of blackberries, cherries, and plums, with hints of spices, tobacco, and oak. It has a full body, velvety tannins, and a long, complex finish.", pairings: "Rich sauce, mature cheese", grapeVariety: "Sangiovese, Merlot, Cabernet Sauvignon"},
+      {productCode: "RW003", name: "Ricasoli Chianti Classico Brolio DOCG", region: "Tuscany", country: "Italy", type: "Red", vintage: "2020/2021", price: "VEP$47.00", description: "aromas of ripe cherries, plums, and hints of violet.", pairings: "Roasted meats, aged cheeses", grapeVariety: "Sangiovese"},
+      {productCode: "RW004", name: "Ricasoli Chianti Classico Riserva Brolio DOCG", region: "Tuscany", country: "Italy", type: "Red", vintage: "2019", price: "VEP$68.00", description: "aromas of ripe cherries, red berries, and hints of spices and leather.", pairings: "Grilled meats, aged cheeses", grapeVariety: "Sangiovese"},
+      {productCode: "RW005", name: "Belvento Vermentino Toscana IGT", region: "Tuscany", country: "Italy", type: "White", vintage: "2022", price: "VEP$36.00", description: "aromatic white wine with notes of citrus, pear, and white flowers. It has a lively acidity, a light to medium body, and a refreshing finish.", pairings: "Grilled vegetables, pasta", grapeVariety: "Vermentino"},
+      {productCode: "RW006", name: "Belvento Sireno Toscana IGT", region: "Tuscany", country: "Italy", type: "Red", vintage: "2019", price: "VEP$36.00", description: "deep and lively ruby red, which almost anticipates its intense nose of flowers and ripe red fruit, drifting into spice nuances.", pairings: "Meat dishes, vegetables", grapeVariety: "Sangiovese"},
+      {productCode: "RW007", name: "Sella & Mosca Vermentino de Sardegna La Cala DOC", region: "Sardinia", country: "Italy", type: "White", vintage: "2020", price: "VEP$36.00", description: "displays inviting aromas of citrus fruits, green apple, and Mediterranean herbs. With its crisp acidity, medium body, and refreshing finish reminiscent of a sea breeze.", pairings: "Seafood, salads", grapeVariety: "Vermentino"},
+      {productCode: "RW008", name: "Sella & Mosca Monteoro Vermentino di Gallura Superiore DOC", region: "Sardinia", country: "Italy", type: "White", vintage: "NV", price: "VEP$42.00", description: "aromas of ripe citrus, tropical fruits, and subtle floral notes.", pairings: "Seafood, pasta", grapeVariety: "Vermentino"},
+      {productCode: "RW009", name: "Sella & Mosca Terre Bianche Alghero Torbato DOC", region: "Sardinia", country: "Italy", type: "White", vintage: "NV", price: "VEP$42.00", description: "aromas of white flowers, citrus, and a hint of minerality.", pairings: "Grilled vegetables, fresh cheese", grapeVariety: "Torbato"},
+      {productCode: "AW001", name: "Sella & Mosca Anemone Alghero Rosato DOC", region: "Sardinia", country: "Italy", type: "Rosato", vintage: "NV", price: "VEP$42.00", description: "soft, delicate pink, with various tones. It is plush, fresh, varied, and captivating on the nose, where the aromas blend to form an exuberant bouquet. The main floral note is violet, the fruity one cherry.", pairings: "white meats, vegetables", grapeVariety: "Native Blend"},
+      {productCode: "AW002", name: "Sella & Mosca Cannonau di Sardegna Riserva DOCG", region: "Sardinia", country: "Italy", type: "Red", vintage: "2019/2022", price: "VEP$39.00", description: "aromas of ripe red berries, spices, and hints of Mediterranean herbs.", pairings: "Grilled meats, aged cheese", grapeVariety: "Cannonau"},
+      {productCode: "AW003", name: "La Gioiosa Prosecco DOCG Treviso Brut NV", region: "Veneto", country: "Italy", type: "Prosecco", vintage: "NV", price: "VEP$33.00", description: "aromas of green apple, pear, and citrus, complemented by floral notes.", pairings: "Light appetizers, seafood", grapeVariety: "Glera"},
+      {productCode: "AW004", name: "Nino Franco Nodi Valdobbiandene Prosecco Superiore", region: "Veneto", country: "Italy", type: "Prosecco", vintage: "2020", price: "VEP$66.00", description: "aromas of white peach, citrus, and acacia flowers, with a delicate mineral touch.", pairings: "Light dishes, seafood", grapeVariety: "Glera"},
+      {productCode: "AW005", name: "Nino Franco Rustico Valdobbiandene Prosecco Superiore", region: "Veneto", country: "Italy", type: "Prosecco", vintage: "NV", price: "VEP$49.00", description: "charming sparkling wine with aromas of apple, pear, and citrus, complemented by floral and yeasty notes.", pairings: "Aperitifs, seafood", grapeVariety: "Glera"},
+      {productCode: "AW006", name: "Nicolis Valpolicella DOC Classico", region: "Veneto", country: "Italy", type: "Red", vintage: "2021", price: "VEP$37.00", description: "aromas of red cherries, plums, and hints of spices.", pairings: "Pizza, grilled meats", grapeVariety: "Corvina, Rondinella, Molinara"},
+      {productCode: "AW007", name: "Nicolis Amarone Valpolicella Classico DOCG", region: "Veneto", country: "Italy", type: "Red", vintage: "2017/2019", price: "VEP$118.00", description: "a robust and complex red wine with aromas of dried fruits, chocolate, and spices.", pairings: "Aged cheese, rich meats", grapeVariety: "Corvina, Molinara, Rondinella, Croatina"},
+      {productCode: "AW008", name: "St Pauls Kellerei Sauvignon Blanc Gfill Alto Adige DOC", region: "Alto Adige", country: "Italy", type: "White", vintage: "2021", price: "VEP$46.00", description: "an aromatic white wine with vibrant notes of citrus, green apple, and tropical fruits, complemented by hints of herbs and minerality.", pairings: "Seafood, goat cheese", grapeVariety: "Sauvignon Blanc"},
+      {productCode: "AW009", name: "St Pauls Kellerei Chardonnay Alto Adige DOC", region: "Alto Adige", country: "Italy", type: "white", vintage: "2021", price: "VEP$40.00", description: "aromas of ripe apples, pears, and subtle notes of vanilla and toast.", pairings: "Creamy pasta, seafood", grapeVariety: "Chardonnay"},
+      {productCode: "CW001", name: "St Pauls Kellerei Pinot Nero Luzia Alto Adige DOC", region: "Alto Adige", country: "Italy", type: "Red", vintage: "2021/2022", price: "VEP$50.00", description: "aromas of red berries, cherries, and subtle earthy notes.", pairings: "Roasted poultry, salmon", grapeVariety: "Pinot Nero"},
+      {productCode: "CW002", name: "Cantina Lavis Pinot Grigio Trentino DOC", region: "Alto Adige", country: "Italy", type: "White", vintage: "2021/2022", price: "VEP$30.00", description: "aromas of green apple, pear, and citrus, enhanced by subtle floral notes.", pairings: "Seafood, pasta dishes", grapeVariety: "Pinot Grigio"},
+      {productCode: "CW003", name: "Cantina Lavis Chardonnay Treviso DOC", region: "Alto Adige", country: "Italy", type: "White", vintage: "2021", price: "VEP$30.00", description: "aromas of ripe apple, pear, and a hint of vanilla.", pairings: "Poultry, creamy sauce", grapeVariety: "Chardonnay"},
+      {productCode: "CW004", name: "Cantina Lavis Sauvignon Blanc Trevenezie IGT ", region: "Alto Adige", country: "Italy", type: "White", vintage: "2021", price: "VEP$30.00", description: "aromas of citrus, green apple, and tropical fruits, complemented by herbal and mineral notes.", pairings: "Salads, light dishes", grapeVariety: "Sauvignon"},
+      {productCode: "CW005", name: "Cusumano Angimbe Terre Sicilane Bianco IGT SV", region: "Sicily", country: "Italy", type: "White", vintage: "2021", price: "VEP$39.00", description: "aromatic white wine with notes of citrus, green apple, and tropical fruits, complemented by floral and mineral hints.", pairings: "Salads, seafoods", grapeVariety: "Insolia, Chardonnay"},
+      {productCode: "CW006", name: "Cusumano Benuara Terre Siciliane Rosso IGT SV", region: "Sicily", country: "Italy", type: "Red", vintage: "2021", price: "VEP$46.00", description: "aromas of dark berries, plums, and spices, with a touch of earthy undertones.", pairings: "Grilled meats, pasta dishes", grapeVariety: "Nero d'Avola, Syrah"},
+      { productCode: "CW007", name: "Alta Mora Etna Bianco DOC ", region: "Sicily", country: "Italy", type: "White", vintage: "2021", price: "VEP$55.00", description: "aromas of citrus, green apple, and white flowers, with a mineral backbone typical of Etna wines.", pairings: "Seafood, light pasta dishes", grapeVariety: "Carricante" },
+      { productCode: "CW008", name: "Alta Mora Etna Rosso DOC", region: "Sicily", country: "Italy", type: "Red", vintage: "2019/2020", price: "VEP$55.00", description: "aromas of red berries, cherries, and subtle earthy and smoky notes.", pairings: "Rich sauces, aged cheese", grapeVariety: "Nerello Mascalese" },
             { productCode: "CW009", name: "BellaVista Franciacorta Alma Gran Cuvee Franciacorta Brut", region: "Lombardy", country: "Italy", type: "Prosecco", vintage: "NV", price: "VEP$85.00", description: "aromas of white flowers, citrus, and toasted brioche.", pairings: "Seafood, light appetizers", grapeVariety: "Pinot Nero, Chardonnay, Pinot Bianco" },
             { productCode: "DW001", name: "BellaVista Franciacorta Alma Gran Cuvee Franciacorta Brut 1500ml", region: "Lombardy", country: "Italy", type: "Prosecco", vintage: "NV", price: "VEP$183.00", description: "aromas of white flowers, citrus, and toasted brioche.", pairings: "Seafood, light appetizers", grapeVariety: "Pinot Nero, Chardonnay, Pinot Bianco" },
             { productCode: "PF001", name: "Pouilly-Fuissé Chartron et Trébuchet", region: "Burgundy", country: "France", type: "White Wine", vintage: "2021", price: "VEP$90.00", description: "Elegant and complex with aromas of ripe stone fruits, citrus, and a hint of toasted almonds.", pairings: "Grilled seafood, roast chicken, creamy cheeses", grapeVariety: "Chardonnay" },
@@ -314,9 +325,9 @@
             { productCode: "MC205", name: "Oakridge Pinot Noir", region: "Yarra Valley, Victoria", country: "Australia", type: "Red", vintage: "-", price: "VEP$63.00", description: "A refined Pinot Noir with bright red fruit, subtle spice, and silky tannins.", pairings: "Duck, mushroom risotto, or grilled salmon.", grapeVariety: "Pinot Noir" },
             { productCode: "MC206", name: "Rymill The Yearling Sauvignon Blanc", region: "Coonawarra, South Australia", country: "Australia", type: "White", vintage: "-", price: "VEP$28.00", description: "A crisp and vibrant Sauvignon Blanc with citrus and tropical fruit notes.", pairings: "Seafood, salads, or light pasta dishes.", grapeVariety: "Sauvignon Blanc" },
             { productCode: "MC207", name: "Rymill The Yearling Cabernet Sauvignon", region: "Coonawarra, South Australia", country: "Australia", type: "Red", vintage: "-", price: "VEP$28.00", description: "A bold Cabernet Sauvignon with ripe blackcurrant, cedar, and subtle spice notes.", pairings: "Grilled meats, roast lamb, or aged cheeses.", grapeVariety: "Cabernet Sauvignon" },
-            { productCode: "MC208", name: "Rymill Cabernet Sauvignon", region: "Coonawarra, South Australia", country: "Australia", type: "Red", vintage: "-", price: "VEP$42.00", description: "A classic Coonawarra Cabernet Sauvignon with rich blackcurrant, mint, and fine tannins.", pairings: "Grilled steak, roasted lamb, or hard cheeses.", grapeVariety: "Cabernet Sauvignon" },
+            { productCode: "MC208", name: "Rymill Cabernet Sauvignon", region: "Coonawarra, South Australia", country: "Australia", type: "Red", vintage: "-", price: "VEP$42.00", description: "A classic Coonawarra Cabernet Sauvignon with rich blackcurrant, mint, and fine tannins.", pairings: "Grilled steak, roasted lamb, or hard cheeses.", grapeVariety: "Cabernet Sauvignon" }
         ];
-        
+
         function populateFilters() {
             const categories = ["country", "region", "type", "price", "grapeVariety"];
             categories.forEach(category => {
@@ -325,7 +336,7 @@
                 select.innerHTML = `<option value="">All ${category}</option>` + uniqueValues.map(val => `<option value="${val}">${val}</option>`).join('');
             });
         }
-        
+
         function searchWines() {
             let input = document.getElementById("search").value.toLowerCase();
             let filters = {
@@ -335,13 +346,13 @@
                 price: document.getElementById("price").value,
                 grapeVariety: document.getElementById("grapeVariety").value
             };
-            
+
             let wineList = document.getElementById("wine-list");
             wineList.innerHTML = "";
-            
-            wines.filter(wine => 
+
+            wines.filter(wine =>
                 Object.values(wine).some(val => val.toString().toLowerCase().includes(input)) &&
-                Object.entries(filters).every(([key, value]) => !value || wine[key] === value)
+                Object.entries(filters).every(([key, value]) =>!value || wine[key] === value)
             ).forEach(wine => {
                 let card = document.createElement("div");
                 card.className = "wine-card";
@@ -358,7 +369,7 @@
                 wineList.appendChild(card);
             });
         }
-        
+
         window.onload = function() {
             populateFilters();
             searchWines();
